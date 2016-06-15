@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/example/yeozuoheng/sunshine/sync/SunshineAuthenticator.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/example/yeozuoheng/sunshine/sync/SunshineAuthenticatorService.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/example/yeozuoheng/sunshine/sync/SunshineSyncAdapter.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/example/yeozuoheng/sunshine/sync/SunshineSyncService.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/xml/authenticator.xml" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/xml/syncadapter.xml" charset="windows-1252" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
