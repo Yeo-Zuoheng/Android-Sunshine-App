@@ -35,12 +35,12 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
     static final String DETAIL_URI = "URI";
-
+    static final String DETAIL_TRANSITION_ANIMATION = "DTA";
     private static final String FORECAST_SHARE_HASHTAG = " #SunshineApp";
 
-    private ShareActionProvider mShareActionProvider;
     private String mForecast;
     private Uri mUri;
+    private boolean mTransitionAnimation;
 
     private static final int DETAIL_LOADER = 0;
 
@@ -96,6 +96,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         Bundle arguments = getArguments();
         if (arguments != null) {
             mUri = arguments.getParcelable(DetailFragment.DETAIL_URI);
+            mTransitionAnimation = arguments.getBoolean(DetailFragment.DETAIL_TRANSITION_ANIMATION, false);
         }
         View rootView = inflater.inflate(R.layout.fragment_detail_start, container, false);
         mIconView = (ImageView) rootView.findViewById(R.id.detail_icon);
@@ -245,15 +246,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             // We still need this for the share intent
             mForecast = String.format("%s - %s - %s/%s", dateText, description, high, low);
             // If onCreateOptionsMenu has already happened, we need to update the share intent now.
-            if (mShareActionProvider != null) {
-                mShareActionProvider.setShareIntent(createShareForecastIntent());
-            }
+
         }
         AppCompatActivity activity = (AppCompatActivity)getActivity();
         Toolbar toolbarView = (Toolbar) getView().findViewById(R.id.toolbar);
 
         // We need to start the enter transition after the data has loaded
-        if (activity instanceof DetailActivity) {
+        if (mTransitionAnimation) {
             activity.supportStartPostponedEnterTransition();
 
             if ( null != toolbarView ) {
