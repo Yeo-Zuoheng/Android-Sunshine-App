@@ -123,6 +123,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             // Inflate the menu; this adds items to the action bar if it is present.
             inflater.inflate(R.menu.detailfragment, menu);
             finishCreatingMenu(menu);
+
         }
     }
 
