@@ -25,10 +25,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -195,19 +197,18 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         }, emptyView,mChoiceMode);
         mRecyclerView.setAdapter(mForecastAdapter);
 
-        final View parallaxView = rootView.findViewById(R.id.parallax_bar);
-        if(null != parallaxView) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+        final AppBarLayout appbarView = (AppBarLayout)rootView.findViewById(R.id.appbar);
+        if(null != appbarView) {
+            ViewCompat.setElevation(appbarView, 0);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
                 mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
-                    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+                    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
                     @Override
                     public void onScrolled(RecyclerView recyclerView, int dx , int dy){
-                        super.onScrolled(recyclerView,dx,dy);
-                        int max = parallaxView.getHeight();
-                        if(dy > 0){
-                            parallaxView.setTranslationY(Math.max(-max, parallaxView.getTranslationY()- dy / 2));
+                        if(0 == mRecyclerView.computeVerticalScrollOffset()){
+                           appbarView.setElevation(0);
                         }else{
-                            parallaxView.setTranslationY(Math.min(0, parallaxView.getTranslationY()-dy / 2));
+                            appbarView.setElevation(appbarView.getTargetElevation());
                         }
                     }
                 });
