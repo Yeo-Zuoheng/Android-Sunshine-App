@@ -330,7 +330,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                             mForecastAdapter.selectView(vh);
                         }
                         if (mHoldForTransition) {
-                            getActivity().supportPostponeEnterTransition();
+                            getActivity().supportStartPostponedEnterTransition();
                         }
                         return true;
                     }
