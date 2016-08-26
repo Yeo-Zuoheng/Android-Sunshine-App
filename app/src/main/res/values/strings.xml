@@ -174,4 +174,5 @@
     <string name="gcm_weather_alert">Heads up: %1$s in %2$s!</string>
     <string name="detail_icon_transition_name" translatable="false">TN_DetailIcon</string>
     <string name="title_widget_today">Sunshine Today</string>
+    <string name="title_widget_detail">Sunshine Details</string>
 </resources>
