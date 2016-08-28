@@ -195,6 +195,7 @@ public class SettingsActivity extends PreferenceActivity
                 editor.putString(getString(R.string.pref_location_key), address);
                 editor.putFloat(getString(R.string.pref_location_latitude), (float)latLong.latitude);
                 editor.putFloat(getString(R.string.pref_location_longitude),(float)latLong.longitude);
+                editor.commit();
                 Preference locationPreference = findPreference(getString(R.string.pref_location_key));
                 setPreferenceSummary(locationPreference, address);
                 // Add attributions for our new PlacePicker location.

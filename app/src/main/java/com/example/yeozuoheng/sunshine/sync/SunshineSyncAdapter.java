@@ -238,6 +238,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         try {
 
             JSONObject forecastJson = new JSONObject(forecastJsonStr);
+            Context context = getContext();
             // do we have an error?
             if ( forecastJson.has(OWM_MESSAGE_CODE) ) {
                 int errorCode = forecastJson.getInt(OWM_MESSAGE_CODE);
