@@ -76,10 +76,7 @@ public class Utility {
         return String.format(context.getString(R.string.format_temperature), temperature);
     }
 
-    static String formatDate(long dateInMilliseconds) {
-        Date date = new Date(dateInMilliseconds);
-        return DateFormat.getDateInstance().format(date);
-    }
+
 
     // Format used for storing dates in the database.  ALso used for converting those strings
     // back into date objects for comparison/processing.
@@ -93,7 +90,7 @@ public class Utility {
      * @param dateInMillis The date in milliseconds
      * @return a user-friendly representation of the date.
      */
-    public static String getFriendlyDayString(Context context, long dateInMillis) {
+    public static String getFriendlyDayString(Context context, long dateInMillis, boolean displayLongToday) {
         // The day string for forecast uses the following logic:
         // For today: "Today, June 8"
         // For tomorrow:  "Tomorrow"
@@ -108,7 +105,7 @@ public class Utility {
 
         // If the date we're building the String for is today's date, the format
         // is "Today, June 24"
-        if (julianDay == currentJulianDay) {
+        if (displayLongToday && julianDay == currentJulianDay) {
             String today = context.getString(R.string.today);
             int formatId = R.string.format_full_friendly_date;
             return String.format(context.getString(
