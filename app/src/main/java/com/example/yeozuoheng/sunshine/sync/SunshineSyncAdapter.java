@@ -168,6 +168,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 return;
             }
             forecastJsonStr = buffer.toString();
+            Log.e(LOG_TAG, forecastJsonStr);
             getWeatherDataFromJson(forecastJsonStr, locationQuery);
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
@@ -324,11 +325,23 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 high = temperatureObject.getDouble(OWM_MAX);
                 low = temperatureObject.getDouble(OWM_MIN);
 
+
+
                 ContentValues weatherValues = new ContentValues();
 
                 weatherValues.put(WeatherContract.WeatherEntry.COLUMN_LOC_KEY, locationId);
                 weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DATE, dateTime);
-                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_HUMIDITY, humidity);
+                //Humidity number released from API has problem.
+                //purse the information to check if return a 0, if so give "vulue not calculated yet"
+                if (humidity == 0){
+                    Log.e(LOG_TAG, Integer.toString(humidity));
+                    String inaccuValue ="Data not ready";
+                    Log.e(LOG_TAG, inaccuValue);
+                    weatherValues.put(WeatherContract.WeatherEntry.COLUMN_HUMIDITY,inaccuValue);
+                }
+                else{
+                    weatherValues.put(WeatherContract.WeatherEntry.COLUMN_HUMIDITY, humidity);
+                }
                 weatherValues.put(WeatherContract.WeatherEntry.COLUMN_PRESSURE, pressure);
                 weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WIND_SPEED, windSpeed);
                 weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DEGREES, windDirection);

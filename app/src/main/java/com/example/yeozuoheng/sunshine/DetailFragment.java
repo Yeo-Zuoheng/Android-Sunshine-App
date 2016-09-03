@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -223,11 +224,21 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             String lowString = Utility.formatTemperature(getActivity(), low);
             mLowTempView.setText(lowString);
             mLowTempView.setContentDescription(getString(R.string.a11y_low_temp, lowString));
+            Log.e(LOG_TAG,data.getString(COL_WEATHER_HUMIDITY));
+            String isValueCalculated = "Data not ready";
+            if( data.getString(COL_WEATHER_HUMIDITY).equals(isValueCalculated)){
+                Log.e(LOG_TAG,"boolean check done");
+                String humidity = data.getString(COL_WEATHER_HUMIDITY);
+                mHumidityView.setText(humidity);
+                Log.e(LOG_TAG,"string set done");
+                mHumidityView.setContentDescription(mHumidityView.getText());
 
-            // Read humidity from cursor and update view
-            float humidity = data.getFloat(COL_WEATHER_HUMIDITY);
-            mHumidityView.setText(getActivity().getString(R.string.format_humidity, humidity));
-            mHumidityView.setContentDescription(getString(R.string.a11y_humidity, mHumidityView.getText()));
+            }else {
+                float humidity = data.getFloat(COL_WEATHER_HUMIDITY);
+                mHumidityView.setText(getActivity().getString(R.string.format_humidity, humidity));
+                mHumidityView.setContentDescription(getString(R.string.a11y_humidity, mHumidityView.getText()));
+            }
+
             mHumidityLabelView.setContentDescription(mHumidityView.getContentDescription());
 
             // Read wind speed and direction from cursor and update view
