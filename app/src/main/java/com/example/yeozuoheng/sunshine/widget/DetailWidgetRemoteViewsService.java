@@ -120,11 +120,11 @@ public class DetailWidgetRemoteViewsService extends RemoteViewsService {
                         Utility.formatTemperature(DetailWidgetRemoteViewsService.this, maxTemp);
                 String formattedMinTemperature =
                         Utility.formatTemperature(DetailWidgetRemoteViewsService.this, minTemp);
-                if (weatherArtImage != null) {
-                    views.setImageViewBitmap(R.id.widget_icon, weatherArtImage);
-                } else {
-                    views.setImageViewResource(R.id.widget_icon, weatherArtResourceId);
-                }
+                    if (weatherArtImage != null) {
+                        views.setImageViewBitmap(R.id.widget_icon, weatherArtImage);
+                    } else {
+                        views.setImageViewResource(R.id.widget_icon, weatherArtResourceId);
+                    }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
                     setRemoteContentDescription(views, description);
                 }

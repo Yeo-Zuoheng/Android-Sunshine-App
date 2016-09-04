@@ -5,22 +5,31 @@ import android.app.IntentService;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.example.yeozuoheng.sunshine.MainActivity;
 import com.example.yeozuoheng.sunshine.R;
 import com.example.yeozuoheng.sunshine.Utility;
 import com.example.yeozuoheng.sunshine.data.WeatherContract;
 
+import java.util.concurrent.ExecutionException;
+
 
 public class TodayWidgetIntentService extends IntentService {
+
+    public final String LOG_TAG = TodayWidgetIntentService.class.getSimpleName();
     private static final String[] FORECAST_COLUMNS = {
             WeatherContract.WeatherEntry.COLUMN_WEATHER_ID,
             WeatherContract.WeatherEntry.COLUMN_SHORT_DESC,
@@ -57,10 +66,23 @@ public class TodayWidgetIntentService extends IntentService {
             data.close();
             return;
         }
-
         // Extract the weather data from the Cursor
         int weatherId = data.getInt(INDEX_WEATHER_ID);
-        int weatherArtResourceId = Utility.getArtResourceForWeatherCondition(weatherId);
+        int weatherArtResourceId = Utility.getIconResourceForWeatherCondition(weatherId);
+        Bitmap weatherTodayArtImage = null;
+        if ( !Utility.usingLocalGraphics(TodayWidgetIntentService.this) ) {
+            String weatherArtResourceUrl = Utility.getArtUrlForWeatherCondition(
+                    TodayWidgetIntentService.this, weatherId);
+            try {
+                weatherTodayArtImage = Glide.with(TodayWidgetIntentService.this)
+                        .load(weatherArtResourceUrl)
+                        .asBitmap()
+                        .error(weatherArtResourceId)
+                        .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get();
+            } catch (InterruptedException | ExecutionException e) {
+                Log.e(LOG_TAG, "Error retrieving large icon from " + weatherArtResourceUrl, e);
+            }
+        }
         String description = data.getString(INDEX_SHORT_DESC);
         double maxTemp = data.getDouble(INDEX_MAX_TEMP);
         double minTemp = data.getDouble(INDEX_MIN_TEMP);
@@ -85,7 +107,11 @@ public class TodayWidgetIntentService extends IntentService {
             RemoteViews views = new RemoteViews(getPackageName(), layoutId);
 
             // Add the data to the RemoteViews
-            views.setImageViewResource(R.id.widget_icon, weatherArtResourceId);
+            if (weatherTodayArtImage != null) {
+                views.setImageViewBitmap(R.id.widget_icon, weatherTodayArtImage);
+            } else {
+                views.setImageViewResource(R.id.widget_icon, weatherArtResourceId);
+            }
             // Content Descriptions for RemoteViews were only added in ICS MR1
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
                 setRemoteContentDescription(views, description);
