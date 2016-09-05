@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
-import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -25,7 +24,6 @@ import java.util.concurrent.ExecutionException;
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class DetailWidgetRemoteViewsService extends RemoteViewsService {
-    public final String LOG_TAG = DetailWidgetRemoteViewsService.class.getSimpleName();
     private static final String[] FORECAST_COLUMNS = {
             WeatherContract.WeatherEntry.TABLE_NAME + "." + WeatherContract.WeatherEntry._ID,
             WeatherContract.WeatherEntry.COLUMN_DATE,
@@ -107,7 +105,6 @@ public class DetailWidgetRemoteViewsService extends RemoteViewsService {
                                 .error(weatherArtResourceId)
                                 .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get();
                     } catch (InterruptedException | ExecutionException e) {
-                        Log.e(LOG_TAG, "Error retrieving large icon from " + weatherArtResourceUrl, e);
                     }
                 }
                 String description = data.getString(INDEX_WEATHER_DESC);

@@ -8,7 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
+
 import android.widget.Toast;
 
 import com.example.yeozuoheng.sunshine.MainActivity;
@@ -17,7 +17,6 @@ import com.google.android.gms.gcm.GcmListenerService;
 
 public class MyGcmListenerService extends GcmListenerService {
 
-    private static final String TAG = "MyGcmListenerService";
 
     private static final String EXTRA_DATA = "data";
     private static final String EXTRA_WEATHER = "weather";
@@ -50,7 +49,6 @@ public class MyGcmListenerService extends GcmListenerService {
                         String.format(getString(R.string.gcm_weather_alert), weather, location);
                 sendNotification(alert);
             }
-            Log.i(TAG, "Received: " + data.toString());
         }
     }
 

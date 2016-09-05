@@ -4,9 +4,6 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.widget.Toast;
-
 import com.example.yeozuoheng.sunshine.MainActivity;
 import com.example.yeozuoheng.sunshine.R;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -46,7 +43,6 @@ public class RegistrationIntentService extends IntentService {
                 sharedPreferences.edit().putBoolean(MainActivity.SENT_TOKEN_TO_SERVER, true).apply();
             }
         } catch (Exception e) {
-            Log.d(TAG, "Failed to complete token refresh", e);
 
             // If an exception happens while fetching the new token or updating our registration data
             // on a third-party server, this ensures that we'll attempt the update at a later time.
@@ -62,6 +58,5 @@ public class RegistrationIntentService extends IntentService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
-        Log.i(TAG, "GCM Registration Token: " + token);
     }
 }

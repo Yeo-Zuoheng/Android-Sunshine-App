@@ -23,7 +23,6 @@ import android.support.annotation.IntDef;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.format.Time;
-import android.util.Log;
 
 import com.example.yeozuoheng.sunshine.BuildConfig;
 import com.example.yeozuoheng.sunshine.data.WeatherContract;
@@ -46,7 +45,6 @@ import java.net.URL;
 import java.util.Vector;
 
 public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
-    public final String LOG_TAG = SunshineSyncAdapter.class.getSimpleName();
     public static final String ACTION_DATA_UPDATED = "com.example.yeozuoheng.sunshine.ACTION_DATA_UPDATED";
     // Interval at which to sync with the weather, in seconds.
     // 60 seconds (1 minute) * 180 = 3 hours
@@ -83,7 +81,6 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
-        Log.d(LOG_TAG, "Starting sync");
         // We no longer need just the location String, but also potentially the latitude and
         // longitude, in case we are syncing based on a new Place Picker API result.
         Context context = getContext();
@@ -168,15 +165,12 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 return;
             }
             forecastJsonStr = buffer.toString();
-            Log.e(LOG_TAG, forecastJsonStr);
             getWeatherDataFromJson(forecastJsonStr, locationQuery);
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the weather data, there's no point in attempting
             // to parse it.
             setLocationStatus(getContext(), LOCATION_STATUS_SERVER_DOWN);
         } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
             setLocationStatus(getContext(), LOCATION_STATUS_SERVER_INVALID);
         } finally {
@@ -187,7 +181,6 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 try {
                     reader.close();
                 } catch (final IOException e) {
-                    Log.e(LOG_TAG, "Error closing stream", e);
                 }
             }
         }
@@ -334,9 +327,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 //Humidity number released from API has problem.
                 //purse the information to check if return a 0, if so give "vulue not calculated yet"
                 if (humidity == 0){
-                    Log.e(LOG_TAG, Integer.toString(humidity));
                     String inaccuValue ="Data not ready";
-                    Log.e(LOG_TAG, inaccuValue);
                     weatherValues.put(WeatherContract.WeatherEntry.COLUMN_HUMIDITY,inaccuValue);
                 }
                 else{
@@ -365,12 +356,9 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 updateWidget();
                 notifyWeather();
             }
-
-            Log.d(LOG_TAG, "Sync Complete. " + cVVector.size() + " Inserted");
             setLocationStatus(getContext(), LOCATION_STATUS_OK);
 
         } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
             setLocationStatus(getContext(), LOCATION_STATUS_SERVER_INVALID);
         }

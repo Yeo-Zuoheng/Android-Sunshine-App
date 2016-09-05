@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,7 +33,6 @@ import com.example.yeozuoheng.sunshine.data.WeatherContract.WeatherEntry;
  */
 public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String LOG_TAG = DetailFragment.class.getSimpleName();
     static final String DETAIL_URI = "URI";
     static final String DETAIL_TRANSITION_ANIMATION = "DTA";
     private static final String FORECAST_SHARE_HASHTAG = " #SunshineApp";
@@ -224,13 +222,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             String lowString = Utility.formatTemperature(getActivity(), low);
             mLowTempView.setText(lowString);
             mLowTempView.setContentDescription(getString(R.string.a11y_low_temp, lowString));
-            Log.e(LOG_TAG,data.getString(COL_WEATHER_HUMIDITY));
             String isValueCalculated = "Data not ready";
             if( data.getString(COL_WEATHER_HUMIDITY).equals(isValueCalculated)){
-                Log.e(LOG_TAG,"boolean check done");
                 String humidity = data.getString(COL_WEATHER_HUMIDITY);
                 mHumidityView.setText(humidity);
-                Log.e(LOG_TAG,"string set done");
                 mHumidityView.setContentDescription(mHumidityView.getText());
 
             }else {

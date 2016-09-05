@@ -7,7 +7,6 @@ import android.os.Parcelable;
 import android.support.v4.util.LongSparseArray;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.widget.AbsListView;
 import android.widget.Checkable;
@@ -17,7 +16,6 @@ import android.widget.Checkable;
  * doesn't take advantage of new adapter features to track changes in the underlying data.
  */
 public class ItemChoiceManager {
-    private final String LOG_TAG = MainActivity.class.getSimpleName();
     private final String SELECTED_ITEMS_KEY = "SIK";
     private int mChoiceMode;
 
@@ -67,7 +65,6 @@ public class ItemChoiceManager {
         int position = vh.getAdapterPosition();
 
         if (position == RecyclerView.NO_POSITION) {
-            Log.d(LOG_TAG, "Unable to Set Item State");
             return;
         }
 

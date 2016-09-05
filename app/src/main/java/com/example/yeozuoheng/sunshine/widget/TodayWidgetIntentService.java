@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
 
@@ -29,7 +28,6 @@ import java.util.concurrent.ExecutionException;
 
 public class TodayWidgetIntentService extends IntentService {
 
-    public final String LOG_TAG = TodayWidgetIntentService.class.getSimpleName();
     private static final String[] FORECAST_COLUMNS = {
             WeatherContract.WeatherEntry.COLUMN_WEATHER_ID,
             WeatherContract.WeatherEntry.COLUMN_SHORT_DESC,
@@ -80,7 +78,6 @@ public class TodayWidgetIntentService extends IntentService {
                         .error(weatherArtResourceId)
                         .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get();
             } catch (InterruptedException | ExecutionException e) {
-                Log.e(LOG_TAG, "Error retrieving large icon from " + weatherArtResourceUrl, e);
             }
         }
         String description = data.getString(INDEX_SHORT_DESC);
