@@ -13,7 +13,7 @@
     <string name="pref_location_status_key" translatable="false">loc-status</string>
 
     <!-- Default postal code for location preference [CHAR LIMIT=NONE] -->
-    <string name="pref_location_default" translatable="false">94043</string>
+    <string name="pref_location_default" translatable="false">Add your first Change in Settings</string>
     <string name="pref_current_location_desc">Use my location</string>
     <!-- Label for the temperature units preference [CHAR LIMIT=30] -->
     <string name="pref_units_label">Temperature Units</string>
@@ -182,5 +182,6 @@
 
     <string name="title_widget_today">Sunshine Today</string>
     <string name="title_widget_detail">Sunshine Details</string>
+    <string name="dialog_button">Done</string>
 
 </resources>

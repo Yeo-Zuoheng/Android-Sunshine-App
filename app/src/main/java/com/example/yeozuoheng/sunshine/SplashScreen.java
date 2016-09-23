@@ -1,26 +1,42 @@
 package com.example.yeozuoheng.sunshine;
-
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 
-public class SplashScreen extends Activity{
-    private static int SPLASH_TIME_OUT = 500;
+
+public class SplashScreen extends FragmentActivity implements LocationDialog.LocationDialogListener{
+    Intent intent;
+
+    @Override
+    public void onDialogNeutralClick(DialogFragment dialog) {
+        // User touched the dialog's positive button
+
+        //set the location of given by the user to the string handling locations
+
+
+        startActivity(intent);
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(SplashScreen.this,MainActivity.class);
-                startActivity(intent);
+        intent = new Intent(SplashScreen.this,MainActivity.class);
+    }
 
-                finish();
-            }
-        },SPLASH_TIME_OUT);
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        showLocationDialog();
+    }
+    private void showLocationDialog (){
+        DialogFragment locationDialog = new LocationDialog();
+        locationDialog.show(getSupportFragmentManager(), "LocationDialog");
     }
 }

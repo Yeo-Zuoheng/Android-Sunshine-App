@@ -16,19 +16,25 @@
 package com.example.yeozuoheng.sunshine;
 
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 import com.example.yeozuoheng.sunshine.data.WeatherContract;
 import com.example.yeozuoheng.sunshine.gcm.RegistrationIntentService;
@@ -42,16 +48,18 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
     public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
 
     private boolean mTwoPane;
-    private String mLocation;
+    public static String mLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mLocation = Utility.getPreferredLocation(this);
         Uri contentUri = getIntent() != null ? getIntent().getData() : null;
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        MainActivity.mLocation = LocationDialog.userLocation;
         if (findViewById(R.id.weather_detail_container) != null) {
             // The detail container view will be present only in the large-screen layouts
             // (res/layout-sw600dp). If this view is present, then the activity should be
@@ -75,8 +83,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
             mTwoPane = false;
             getSupportActionBar().setElevation(0f);
         }
-
-
+        SunshineSyncAdapter.initializeSyncAdapter(this);
         ForecastFragment forecastFragment =  ((ForecastFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_forecast));
                 forecastFragment.setUseTodayLayout(!mTwoPane);
@@ -84,7 +91,6 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
             forecastFragment.setInitialSelectedDate(
                     WeatherContract.WeatherEntry.getDateFromUri(contentUri));
         }
-        SunshineSyncAdapter.initializeSyncAdapter(this);
         if (checkPlayServices()) {
             // This is where we could either prompt a user that they should install
             // the latest version of Google Play Services, or add an error snackbar
@@ -98,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
             }
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -179,5 +186,6 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
         }
         return true;
     }
+
     }
 
