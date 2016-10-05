@@ -26,6 +26,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -59,6 +60,23 @@ public class SettingsActivity extends PreferenceActivity
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_units_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_art_pack_key)));
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sp.edit();
+       
+        if (!sp.contains("firstrunSetting") || sp.getString("firstrunSetting", null).equals(LocationDialog.userLocation)){
+
+            Preference locationPreference = findPreference(getString(R.string.pref_location_key));
+            setPreferenceSummary(locationPreference, LocationDialog.userLocation);
+
+            editor.putString("firstrunSetting", LocationDialog.userLocation);
+            editor.commit();
+
+
+        }
+        else if (sp.contains("firstrunSetting") &&!sp.getString("firstrunSetting", null).equals("")){
+            Preference locationPreference = findPreference(getString(R.string.pref_location_key));
+            setPreferenceSummary(locationPreference, sp.getString("firstrunSetting",null));
+        }
 
         // If we are using a PlacePicker location, we need to show attributions.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -118,6 +136,14 @@ public class SettingsActivity extends PreferenceActivity
             switch (status) {
                 case SunshineSyncAdapter.LOCATION_STATUS_OK:
                     preference.setSummary(stringValue);
+                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+                    SharedPreferences.Editor editor = sp.edit();
+//                    Boolean isSingapore = sp.getString("firstrunSetting", null).equals(LocationDialog.userLocation);
+                    if (sp.contains("firstrunSetting") && !stringValue.equals(sp.getString("firstrunSetting", null)) && !stringValue.equals("")) {
+
+                        editor.putString("firstrunSetting", stringValue);
+                        editor.apply();
+                    }
                     break;
                 case SunshineSyncAdapter.LOCATION_STATUS_UNKNOWN:
                     preference.setSummary(getString(R.string.pref_location_unknown_description, value.toString()));

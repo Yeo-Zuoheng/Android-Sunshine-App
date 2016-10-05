@@ -46,6 +46,11 @@ public class LocationEditTextPreference extends EditTextPreference {
             // Add the get current location widget to our location preference
             setWidgetLayoutResource(R.layout.pref_current_location);
             }
+
+    }
+    public void setTexthelperMethod(String newString){
+        EditText editText = getEditText();
+        editText.setText(newString);
     }
     @Override
     protected View onCreateView(ViewGroup parent) {

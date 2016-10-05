@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ public class LocationDialog extends DialogFragment{
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         AlertDialog.Builder locationDialog = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         locationDialog.setView(inflater.inflate(R.layout.country_dialog, null))
@@ -29,8 +31,6 @@ public class LocationDialog extends DialogFragment{
                         Dialog dialog = (Dialog) dialogInterface;
                         EditText editText = (EditText)dialog.findViewById(R.id.dialog_location_editfield);
                         userLocation = editText.getText().toString();
-                        Log.e(LocationDialog.class.getSimpleName(),userLocation);
-
                         mListener.onDialogNeutralClick(LocationDialog.this);
                     }
                 });
@@ -38,6 +38,10 @@ public class LocationDialog extends DialogFragment{
 
     }
 
+
+    private void registerListener(LocationDialogListener listener){
+        mListener = listener;
+    }
 
     // Use this instance of the interface to deliver action events
     LocationDialogListener mListener;
@@ -47,7 +51,7 @@ public class LocationDialog extends DialogFragment{
         // Verify that the host activity implements the callback interface
         try {
             // Instantiate the NoticeDialogListener so we can send events to the host
-            mListener = (LocationDialogListener) activity;
+            registerListener((LocationDialogListener)activity);
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(activity.toString()
